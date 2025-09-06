@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MoodProvider } from "@/contexts/MoodContext";
 import { GameProvider } from "@/contexts/GameContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { JournalProvider } from "@/contexts/JournalContext";
 import { Layout } from "@/components/Layout";
 import { Home } from "./pages/Home";
 import { Booking } from "./pages/Booking";
@@ -19,25 +21,29 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <MoodProvider>
-        <GameProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path="booking" element={<Booking />} />
-                <Route path="resources" element={<Resources />} />
-                <Route path="forum" element={<Forum />} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="profile" element={<Profile />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </GameProvider>
-      </MoodProvider>
+      <ThemeProvider>
+        <MoodProvider>
+          <GameProvider>
+            <JournalProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path="booking" element={<Booking />} />
+                    <Route path="resources" element={<Resources />} />
+                    <Route path="forum" element={<Forum />} />
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="profile" element={<Profile />} />
+                  </Route>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </JournalProvider>
+          </GameProvider>
+        </MoodProvider>
+      </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

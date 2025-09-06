@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Navigation } from './Navigation';
 import { MoodSelector } from './MoodSelector';
+import { ThemeToggle } from './ThemeToggle';
 import { useMood } from '@/contexts/MoodContext';
 
 export const Layout = () => {
@@ -39,13 +40,15 @@ export const Layout = () => {
               <span className="text-2xl">{currentMood === 'neutral' ? '🧠' : ''}</span>
             </div>
             
-            <div className="hidden lg:block">
+            <div className="hidden lg:flex lg:items-center lg:gap-4">
               <MoodSelector />
+              <ThemeToggle />
             </div>
           </div>
           
-          <div className="lg:hidden mt-4">
+          <div className="lg:hidden mt-4 flex items-center justify-between">
             <MoodSelector />
+            <ThemeToggle />
           </div>
         </div>
       </header>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMood, type MoodType } from '@/contexts/MoodContext';
 import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 import {
   Select,
   SelectContent,
@@ -22,20 +23,29 @@ export const MoodSelector = () => {
   const { currentMood, setMood, moodEmoji } = useMood();
 
   return (
-    <div className="flex items-center gap-4">
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex items-center gap-4"
+    >
       <span className="text-sm font-medium text-muted-foreground">How are you feeling?</span>
       
       <div className="flex gap-2 md:hidden">
         {moods.map((mood) => (
-          <Button
+          <motion.div
             key={mood.value}
-            variant={currentMood === mood.value ? "default" : "ghost"}
-            size="sm"
-            onClick={() => setMood(mood.value)}
-            className="text-lg p-2 h-auto"
+            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.1 }}
           >
-            {mood.emoji}
-          </Button>
+            <Button
+              variant={currentMood === mood.value ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setMood(mood.value)}
+              className="text-lg p-2 h-auto transition-all duration-300"
+            >
+              {mood.emoji}
+            </Button>
+          </motion.div>
         ))}
       </div>
 
@@ -61,6 +71,6 @@ export const MoodSelector = () => {
           </SelectContent>
         </Select>
       </div>
-    </div>
+    </motion.div>
   );
 };

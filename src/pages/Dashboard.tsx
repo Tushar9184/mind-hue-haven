@@ -1,5 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { WellnessScore } from '@/components/WellnessScore';
+import { motion } from 'framer-motion';
 import { 
   BarChart, 
   Bar, 
@@ -74,25 +76,45 @@ export const Dashboard = () => {
 
   return (
     <div className="space-y-8">
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {wellnessMetrics.map((metric, index) => (
-          <Card key={index} className="mood-card">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{metric.title}</CardTitle>
-              <metric.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{metric.value}</div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <span className="text-green-600 font-medium">{metric.change}</span>
-                <span>from last period</span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{metric.description}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {/* Wellness Score Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+      >
+        <div className="lg:col-span-1">
+          <WellnessScore />
+        </div>
+        <div className="lg:col-span-2">
+          {/* Key Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {wellnessMetrics.map((metric, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Card className="mood-card">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">{metric.title}</CardTitle>
+                    <metric.icon className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{metric.value}</div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="text-green-600 font-medium">{metric.change}</span>
+                      <span>from last period</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">{metric.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Daily User Engagement */}
