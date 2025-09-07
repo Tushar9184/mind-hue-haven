@@ -1,22 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { MoodType } from './MoodContext';
-
-export interface JournalEntry {
-  id: string;
-  date: string;
-  mood: MoodType;
-  note: string;
-  timestamp: number;
-}
-
-interface JournalContextType {
-  entries: JournalEntry[];
-  addEntry: (mood: MoodType, note: string) => void;
-  getEntriesForPeriod: (days: number) => JournalEntry[];
-  getMoodTrends: () => { [key in MoodType]: number };
-}
-
-const JournalContext = createContext<JournalContextType | undefined>(undefined);
+const JournalContext = createContext(undefined);
 
 export const useJournal = () => {
   const context = useContext(JournalContext);
@@ -26,8 +9,8 @@ export const useJournal = () => {
   return context;
 };
 
-export const JournalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [entries, setEntries] = useState<JournalEntry[]>([]);
+export const JournalProvider = ({ children }) => {
+  const [entries, setEntries] = useState([]);
 
   useEffect(() => {
     const savedEntries = localStorage.getItem('journal-entries');
@@ -35,7 +18,7 @@ export const JournalProvider: React.FC<{ children: React.ReactNode }> = ({ child
       setEntries(JSON.parse(savedEntries));
     } else {
       // Add some mock data for demo
-      const mockEntries: JournalEntry[] = [
+      const mockEntries = [
         {
           id: '1',
           date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
@@ -66,8 +49,8 @@ export const JournalProvider: React.FC<{ children: React.ReactNode }> = ({ child
     localStorage.setItem('journal-entries', JSON.stringify(entries));
   }, [entries]);
 
-  const addEntry = (mood: MoodType, note: string) => {
-    const newEntry: JournalEntry = {
+  const addEntry = (mood, note) => {
+    const newEntry = {
       id: Date.now().toString(),
       date: new Date().toISOString().split('T')[0],
       mood,
@@ -77,13 +60,13 @@ export const JournalProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setEntries(prev => [newEntry, ...prev]);
   };
 
-  const getEntriesForPeriod = (days: number) => {
+  const getEntriesForPeriod = (days) => {
     const cutoff = Date.now() - (days * 24 * 60 * 60 * 1000);
     return entries.filter(entry => entry.timestamp > cutoff);
   };
 
   const getMoodTrends = () => {
-    const trends: { [key in MoodType]: number } = {
+    const trends = {
       happy: 0,
       sad: 0,
       anxious: 0,

@@ -1,33 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  points: number;
-  completed: boolean;
-  category: 'meditation' | 'journaling' | 'breathing' | 'exercise' | 'social';
-}
-
-export interface Badge {
-  id: string;
-  name: string;
-  description: string;
-  tier: 'bronze' | 'silver' | 'gold' | 'platinum';
-  unlocked: boolean;
-  pointsRequired: number;
-}
-
-interface GameContextType {
-  points: number;
-  level: number;
-  tasks: Task[];
-  badges: Badge[];
-  completeTask: (taskId: string) => void;
-  addPoints: (points: number) => void;
-}
-
-const initialTasks: Task[] = [
+const initialTasks = [
   {
     id: '1',
     title: '5-Minute Meditation',
@@ -62,7 +35,7 @@ const initialTasks: Task[] = [
   }
 ];
 
-const initialBadges: Badge[] = [
+const initialBadges = [
   {
     id: '1',
     name: 'First Steps',
@@ -97,7 +70,7 @@ const initialBadges: Badge[] = [
   }
 ];
 
-const GameContext = createContext<GameContextType | undefined>(undefined);
+const GameContext = createContext(undefined);
 
 export const useGame = () => {
   const context = useContext(GameContext);
@@ -107,14 +80,14 @@ export const useGame = () => {
   return context;
 };
 
-export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const GameProvider = ({ children }) => {
   const [points, setPoints] = useState(0);
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
-  const [badges, setBadges] = useState<Badge[]>(initialBadges);
+  const [tasks, setTasks] = useState(initialTasks);
+  const [badges, setBadges] = useState(initialBadges);
 
   const level = Math.floor(points / 50) + 1;
 
-  const completeTask = (taskId: string) => {
+  const completeTask = (taskId) => {
     setTasks(prev => prev.map(task => {
       if (task.id === taskId && !task.completed) {
         addPoints(task.points);
@@ -124,7 +97,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }));
   };
 
-  const addPoints = (newPoints: number) => {
+  const addPoints = (newPoints) => {
     const totalPoints = points + newPoints;
     setPoints(totalPoints);
     
