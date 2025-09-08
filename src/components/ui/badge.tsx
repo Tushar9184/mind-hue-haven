@@ -20,7 +20,13 @@ const badgeVariants = cva(
   },
 );
 
-function Badge({ className, variant, ...props }) {
+function Badge({ 
+  className, 
+  variant = "default", 
+  ...props 
+}: React.HTMLAttributes<HTMLDivElement> & {
+  variant?: "default" | "secondary" | "destructive" | "outline";
+}) {
   return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
 }
 
