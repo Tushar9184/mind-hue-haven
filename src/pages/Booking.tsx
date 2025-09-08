@@ -126,7 +126,7 @@ export const Booking = () => {
                     <SelectContent>
                       {[...new Set(availableSlots.map(slot => slot.date.toDateString()))].map(date => (
                         <SelectItem key={date} value={date}>
-                          {new Date(date).toLocaleDateString('en-US', { 
+                          {new Date(date as string).toLocaleDateString('en-US', { 
                             weekday: 'long', 
                             month: 'long', 
                             day: 'numeric' 

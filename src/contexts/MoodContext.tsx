@@ -9,7 +9,13 @@ const moodEmojis = {
   neutral: '😐'
 };
 
-const MoodContext = createContext(undefined);
+export type MoodType = 'happy' | 'sad' | 'anxious' | 'calm' | 'stressed' | 'neutral';
+
+const MoodContext = createContext<{
+  currentMood: MoodType;
+  setMood: (mood: MoodType) => void;
+  moodEmoji: string;
+} | undefined>(undefined);
 
 export const useMood = () => {
   const context = useContext(MoodContext);
@@ -19,10 +25,10 @@ export const useMood = () => {
   return context;
 };
 
-export const MoodProvider = ({ children }) => {
-  const [currentMood, setCurrentMood] = useState('neutral');
+export const MoodProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [currentMood, setCurrentMood] = useState<MoodType>('neutral');
 
-  const setMood = (mood) => {
+  const setMood = (mood: MoodType) => {
     setCurrentMood(mood);
     // Apply mood theme to document root
     document.documentElement.setAttribute('data-mood', mood);
