@@ -43,4 +43,10 @@ const Button = React.forwardRef<
 });
 Button.displayName = "Button";
 
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  size?: "default" | "sm" | "lg" | "icon";
+  asChild?: boolean;
+};
+
 export { Button, buttonVariants };
